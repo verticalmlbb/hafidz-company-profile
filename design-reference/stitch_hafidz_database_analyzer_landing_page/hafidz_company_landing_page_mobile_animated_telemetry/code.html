@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hafidz Company - Enterprise Database Performance &amp; Intelligence Architecture</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#93000a",
+            "inverse-surface": "#e3e2e5",
+            "on-primary-fixed": "#410001",
+            "on-surface-variant": "#eabcb5",
+            "on-tertiary-container": "#5c0000",
+            "surface-container-lowest": "#0d0e10",
+            "tertiary-fixed": "#ffdad4",
+            "surface": "#121315",
+            "secondary-container": "#bb0102",
+            "surface-container-highest": "#343537",
+            "outline-variant": "#5f3e3a",
+            "secondary-fixed-dim": "#ffb4a8",
+            "surface-bright": "#38393b",
+            "on-primary-container": "#5c0002",
+            "surface-tint": "#ffb4a9",
+            "on-tertiary": "#690000",
+            "outline": "#b08781",
+            "primary-fixed": "#ffdad5",
+            "secondary": "#ffb4a8",
+            "primary-fixed-dim": "#ffb4a9",
+            "tertiary-container": "#f85c48",
+            "on-primary": "#690002",
+            "secondary-fixed": "#ffdad4",
+            "surface-container-low": "#1b1c1e",
+            "on-primary-fixed-variant": "#930005",
+            "inverse-primary": "#c00009",
+            "on-secondary-fixed": "#410000",
+            "surface-variant": "#343537",
+            "primary": "#ffb4a9",
+            "on-tertiary-fixed-variant": "#900d06",
+            "surface-container-high": "#292a2c",
+            "on-tertiary-fixed": "#410000",
+            "surface-dim": "#121315",
+            "primary-container": "#ff5545",
+            "background": "#121315",
+            "tertiary-fixed-dim": "#ffb4a8",
+            "on-secondary-fixed-variant": "#930001",
+            "inverse-on-surface": "#303033",
+            "tertiary": "#ffb4a8",
+            "on-error": "#690005",
+            "error": "#ffb4ab",
+            "on-background": "#e3e2e5",
+            "on-secondary-container": "#ffc8bf",
+            "on-error-container": "#ffdad6",
+            "surface-container": "#1f2022",
+            "on-secondary": "#690000",
+            "on-surface": "#e3e2e5"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter-sm": "0.75rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-sm": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "code-telemetry": ["Inter"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "display": ["Plus Jakarta Sans"],
+            "display-mobile": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "title-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "700"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "code-telemetry": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+            "body-md": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "body-lg": ["16px", {"lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "display": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+            "display-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+            "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+            "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+            "title-md": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    @keyframes telemetry-wave {
+      0% {
+        stroke-dashoffset: 400;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+    @keyframes scan-beam {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(250%);
+      }
+    }
+    @keyframes crt-scanline {
+      0% {
+        transform: translateY(-100%);
+      }
+      100% {
+        transform: translateY(300%);
+      }
+    }
+    @keyframes pulse-gentle {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.82;
+        transform: scale(1.025);
+      }
+    }
+    .animate-telemetry-wave {
+      stroke-dasharray: 400;
+      animation: telemetry-wave 3.5s ease-in-out infinite alternate;
+    }
+    .animate-scan-beam {
+      animation: scan-beam 2.8s linear infinite;
+    }
+    .animate-crt-scanline {
+      animation: crt-scanline 3.2s linear infinite;
+    }
+    .animate-value-pulse {
+      animation: pulse-gentle 2.4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen selection:bg-secondary-container selection:text-white font-body-md text-body-md antialiased overflow-x-hidden">
+<!-- Mobile Top Navigation Header -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between w-full">
+<!-- Logo Container -->
+<a class="flex items-center gap-2" href="#home">
+<div class="h-8 px-2 bg-white rounded-lg flex items-center justify-center shadow-sm">
+<img alt="Hafidz Company" class="h-5 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsffOHivwlB0hJCVjY-eg4Zriu1wx2ClMKmfSgYLaDqBTKNI1c21jKfmgtJPolOIFnsUp1zP5t2JRpeGOrwvkFdolqFnsmaK0al7p4PHGcsL2C6_1Yvsp9Sn0L1zudCkwkrSjXR4T8Qd2lEoHsTTmcjASagvpg7w9_Z0AXJ5azObzmqmeSekr4SDoxP6qJHheHSvbzP1S0D4Xg9-ULU2dpSE3sExVc4xZ-hV3hNwr3pKNvTDvbJOOf"/>
+</div>
+</a>
+<!-- Trailing Action & Hamburger -->
+<div class="flex items-center gap-2">
+<a class="bg-secondary-container text-white px-3 py-1.5 rounded-lg font-label-md text-label-md font-semibold transition-all duration-200 active:scale-95 shadow-[0_0_12px_rgba(187,1,2,0.4)] hover:bg-error-container" href="#contact">
+          Konsultasi
+        </a>
+<button aria-label="Buka Menu Navigasi" class="p-2 text-on-surface hover:text-primary transition-colors focus:outline-none" id="menu-btn">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+</div>
+</div>
+<!-- Mobile Slide-down Menu -->
+<nav class="hidden max-w-md mx-auto px-5 py-4 bg-surface-container-low border-t border-outline-variant/20 flex-col gap-3" id="mobile-menu">
+<a class="text-primary font-semibold border-b-2 border-primary pb-1 font-label-md text-label-md w-fit" href="#home">Home</a>
+<a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors pb-1 font-label-md text-label-md w-fit" href="#about">About</a>
+<a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors pb-1 font-label-md text-label-md w-fit" href="#services">Services</a>
+<a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors pb-1 font-label-md text-label-md w-fit" href="#news">News</a>
+<a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors pb-1 font-label-md text-label-md w-fit" href="#contact">Contact</a>
+<div class="pt-2 border-t border-outline-variant/20 flex gap-2">
+<button class="w-full text-center py-2 rounded-lg border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:border-primary">Login Portal</button>
+</div>
+</nav>
+</header>
+<!-- Main Mobile Container (Targeting ~390px viewport width) -->
+<main class="max-w-md mx-auto px-4 pb-12 w-full space-y-16">
+<!-- 1. HERO SECTION -->
+<section class="pt-6 relative" id="home">
+<!-- Background Ambient Glow -->
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-secondary-container/15 blur-3xl pointer-events-none rounded-full"></div>
+<!-- Telemetry Live Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/10 border border-secondary-container/40 mb-4 backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">Engine v4.8 • Realtime Telemetry</span>
+</div>
+<!-- Main Headline -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mb-3">
+        Analisis &amp; Optimasi Kinerja Database Enterprise Anda
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant/80 mb-6 leading-relaxed">
+        Eliminasi bottleneck, reduksi latensi query hingga 94%, dan amankan integritas transaksi skala terabyte dengan kecerdasan diagnostik real-time Hafidz Company.
+      </p>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mb-8">
+<a class="w-full py-3.5 px-4 rounded-lg bg-secondary-container text-white font-title-md text-title-md font-semibold text-center shadow-[0_0_20px_rgba(187,1,2,0.45)] hover:bg-error-container active:scale-98 transition-all flex items-center justify-center gap-2" href="#contact">
+<span>Mulai Analisis Gratis</span>
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</a>
+<a class="w-full py-3 px-4 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-title-md text-title-md font-medium text-center hover:border-primary/50 transition-all flex items-center justify-center gap-2" href="#services">
+<span>Jadwalkan Demo</span>
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</a>
+</div>
+<!-- Interactive Telemetry Dashboard Card Mobile Preview -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 p-4 shadow-2xl relative overflow-hidden group">
+<!-- Glow Beam & Ambient Shimmer -->
+<div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary-container to-transparent"></div>
+<div class="pointer-events-none absolute -top-12 -right-12 w-32 h-32 bg-primary-container/10 rounded-full blur-2xl"></div>
+<!-- Header Card: Cluster Info & Live Pulsing Badge -->
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3 mb-3 relative z-10">
+<div class="flex items-center gap-2">
+<div class="relative flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">database</span>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold tracking-tight">CLUSTER: AP-SOUTHEAST-PROD</span>
+</div>
+<div class="relative flex items-center">
+<span class="relative flex h-2 w-2 mr-1.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-telemetry text-white bg-secondary-container shadow-[0_0_10px_rgba(255,85,69,0.35)] flex items-center gap-1 font-semibold">
+<span>STATUS: OPTIMAL</span>
+</span>
+</div>
+</div>
+<!-- Telemetry Stats Grid with Animated Value Pulse -->
+<div class="grid grid-cols-2 gap-2.5 mb-3 relative z-10">
+<div class="bg-surface-container-lowest p-2.5 rounded-lg border border-outline-variant/20 hover:border-primary/40 transition-colors relative overflow-hidden">
+<div class="font-label-sm text-label-sm text-on-surface-variant/70 uppercase">Query P99 Latency</div>
+<div class="font-headline-sm text-headline-sm text-white font-bold flex items-baseline gap-1 mt-0.5 animate-value-pulse">
+              1.82 <span class="text-xs text-on-surface-variant font-normal">ms</span>
+</div>
+<div class="font-code-telemetry text-[10px] text-primary flex items-center gap-0.5 mt-1 font-medium">
+<span class="material-symbols-outlined text-[12px] text-primary-container animate-bounce">trending_down</span>
+<span>-76.4% delta</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded-lg border border-outline-variant/20 hover:border-primary/40 transition-colors relative overflow-hidden">
+<div class="font-label-sm text-label-sm text-on-surface-variant/70 uppercase">Throughput IOPS</div>
+<div class="font-headline-sm text-headline-sm text-white font-bold flex items-baseline gap-1 mt-0.5 animate-value-pulse">
+              42.8 <span class="text-xs text-on-surface-variant font-normal">k/s</span>
+</div>
+<div class="font-code-telemetry text-[10px] text-primary flex items-center gap-0.5 mt-1 font-medium">
+<span class="material-symbols-outlined text-[12px] text-primary-container animate-pulse">trending_up</span>
+<span>+31.2% sustain</span>
+</div>
+</div>
+</div>
+<!-- Animated Telemetry Waveform / Sparkline SVG Graph with Scan Beam -->
+<div class="bg-surface-container-lowest rounded-lg p-2.5 border border-outline-variant/20 mb-3 relative overflow-hidden">
+<div class="flex items-center justify-between text-[10px] font-code-telemetry text-on-surface-variant/70 mb-1.5">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-ping"></span>
+<span>REALTIME IOPS &amp; BUFFER LOAD WAVEFORM</span>
+</span>
+<span class="text-primary font-semibold">99.98% HEALTH</span>
+</div>
+<!-- Waveform Graph Area -->
+<div class="relative h-12 w-full flex items-center justify-center overflow-hidden">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-15 pointer-events-none">
+<div class="w-full h-px bg-outline border-b border-dashed border-outline-variant"></div>
+<div class="w-full h-px bg-outline border-b border-dashed border-outline-variant"></div>
+<div class="w-full h-px bg-outline border-b border-dashed border-outline-variant"></div>
+</div>
+<!-- Sparkline Wave SVG with Crimson Glow Stroke -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 320 48">
+<defs>
+<lineargradient id="crimsonGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#ff5545" stop-opacity="0.38"></stop>
+<stop offset="100%" stop-color="#bb0102" stop-opacity="0.0"></stop>
+</lineargradient>
+<filter height="140%" id="glow" width="140%" x="-20%" y="-20%">
+<fegaussianblur in="SourceGraphic" stddeviation="2.5"></fegaussianblur>
+<femerge>
+<femergenode></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Filled Wave Area -->
+<path d="M0,36 Q25,28 50,33 T100,22 T150,30 T200,14 T250,26 T290,12 T320,18 L320,48 L0,48 Z" fill="url(#crimsonGradient)"></path>
+<!-- Ambient Glow Waveform -->
+<path class="animate-telemetry-wave opacity-70" d="M0,36 Q25,28 50,33 T100,22 T150,30 T200,14 T250,26 T290,12 T320,18" fill="none" filter="url(#glow)" stroke="#ff5545" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<!-- Main Precision Waveform -->
+<path class="animate-telemetry-wave" d="M0,36 Q25,28 50,33 T100,22 T150,30 T200,14 T250,26 T290,12 T320,18" fill="none" stroke="#ffb4a9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+<!-- Realtime Target Pin Point -->
+<circle cx="290" cy="12" fill="#ff5545" filter="url(#glow)" r="3">
+<animate attributename="r" dur="1.5s" repeatcount="indefinite" values="2.5;4.5;2.5"></animate>
+<animate attributename="opacity" dur="1.5s" repeatcount="indefinite" values="0.7;1;0.7"></animate>
+</circle>
+</svg>
+<!-- Vertical Scanning Laser Beam -->
+<div class="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-primary-container/30 to-transparent animate-scan-beam pointer-events-none"></div>
+</div>
+</div>
+<!-- Live Code/Terminal Simulation with Scan Line & CRT effect -->
+<div class="bg-surface-container-lowest rounded-lg p-2.5 font-code-telemetry text-[11px] border border-outline-variant/20 text-on-surface-variant/90 space-y-1 relative overflow-hidden">
+<!-- CRT Scan Line Overlay -->
+<div class="absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-primary-container/5 to-transparent animate-crt-scanline pointer-events-none"></div>
+<div class="flex items-center justify-between text-outline relative z-10">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span>&gt; ANALYZING EXEC_PLAN #8841</span>
+</span>
+<span class="text-primary font-semibold px-1 rounded bg-secondary-container/20 border border-secondary-container/40 text-[9px] tracking-wide">OPTIMIZED</span>
+</div>
+<div class="text-white truncate relative z-10 flex items-center gap-1">
+<span>&gt; INDEX SCAN: idx_trx_tenant_timestamp</span>
+<span class="inline-block w-1.5 h-3 bg-primary animate-pulse ml-0.5"></span>
+</div>
+<div class="text-primary-container truncate relative z-10 flex items-center justify-between">
+<span>&gt; Memory Buffer Hit Ratio: 99.98% [CACHED]</span>
+<span class="text-[9px] text-outline font-normal">sub-ms</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. ABOUT SECTION -->
+<section class="space-y-5" id="about">
+<div class="space-y-2">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Tentang Hafidz Company</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
+          Arsitektur Intelijen Performa Tanpa Kompromi
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant/80">
+          Didirikan oleh spesialis arsitektur basis data berlisensi tinggi, Hafidz Company membantu korporasi finansial, logistik, dan e-commerce Indonesia mengatasi lonjakan beban transaksi data ekstrem dengan presisi tinggi.
+        </p>
+</div>
+<!-- Feature Card 1 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 relative group hover:border-primary/40 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 border border-secondary-container/50 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">neurology</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-white font-semibold">Deep-Query AI Engine</h3>
+<span class="text-[9px] px-1.5 py-0.5 bg-secondary-container text-white rounded font-label-sm uppercase font-bold">AI Core</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Analisis matematis prediktif terhadap pola SQL, mengekspos lock contention dan deadlock sebelum berdampak ke user akhir.
+            </p>
+</div>
+</div>
+</div>
+<!-- Feature Card 2 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 relative group hover:border-primary/40 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 border border-secondary-container/50 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">speed</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-white font-semibold">Monitoring 24/7 Real-Time</h3>
+<span class="text-[9px] px-1.5 py-0.5 bg-outline-variant text-on-surface rounded font-label-sm uppercase font-bold">SLA 99.99%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Telemetri sub-milidetik dengan integrasi peringatan otomatis ke Slack, PagerDuty, dan WhatsApp Ops Team.
+            </p>
+</div>
+</div>
+</div>
+<!-- Feature Card 3 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 relative group hover:border-primary/40 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 border border-secondary-container/50 flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">security</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-white font-semibold">Standar ISO 27001 &amp; Compliance</h3>
+<span class="text-[9px] px-1.5 py-0.5 bg-secondary-container text-white rounded font-label-sm uppercase font-bold">Certified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Metodologi diagnosa non-invasif tanpa akses langsung ke payload data rahasia perbankan dan kedaulatan data NKRI.
+            </p>
+</div>
+</div>
+</div>
+<!-- Supporting Tech Enterprise Graphic -->
+<div class="rounded-xl overflow-hidden border border-outline-variant/30 relative">
+<img class="w-full h-44 object-cover" data-alt="A futuristic dark-mode technical operations command center with high-density server telemetry screens glowing with crimson and deep red charts. Engineers monitor database cluster analytics in a sleek minimalist Indonesian tech headquarters with obsidian surfaces and sharp neon-red illumination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk68M4xW3DzG-Ym-NfVYj7Qz_6XLKoUS_C5kBYVsmAQnMwRnqrw4ymSY9bT437k2W8muuhYzMK000wj4GjIRVDbs7b3W0o29CzASBtJzkPVPT66cGmi9qVX2k9urd4CrpX9To9v7Y8PtBP3safdgv-nUdFV0QRLTrWzcIMWH6tczOAs3Z_1b_S8d8Y3NE9h5lhH6-Gle3zBJx3EMGmLez1_k0Q1yUKuempDVqrIZ8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent flex items-end p-3.5">
+<p class="font-code-telemetry text-body-sm text-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">dns</span> Multi-Engine: PostgreSQL, MySQL, Oracle, MongoDB
+          </p>
+</div>
+</div>
+</section>
+<!-- 3. SERVICES SECTION -->
+<section class="space-y-5" id="services">
+<div class="space-y-2">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Layanan Khusus</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
+          Solusi Arsitektur Kinerja Penuh
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant/80">
+          Modul konsultasi dan audit operasional langsung disesuaikan dengan kebutuhan workload skala jutaan query.
+        </p>
+</div>
+<!-- Services List (Mobile Stack) -->
+<div class="space-y-3">
+<!-- Service 1 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">terminal</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-01</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Tuning Kueri &amp; Query Refactoring</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Audit eksekusi SQL berat, dekonstruksi sub-query tidak efisien, dan optimasi join cost untuk memangkas konsumsi CPU cluster.
+          </p>
+</div>
+<!-- Service 2 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">filter_alt</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-02</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Index Optimization &amp; Partitioning</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Penghapusan index redundan penyebab bloat disk write dan strategi table partitioning skala ratusan juta baris transaksi.
+          </p>
+</div>
+<!-- Service 3 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">monitor_heart</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-03</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Database Health Monitoring</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Implementasi agent lightweight untuk pelacakan I/O wait, connection pool depletion, dan replikasi lag secara simultan.
+          </p>
+</div>
+<!-- Service 4 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">chevron_forward</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-04</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">High Availability &amp; Failover</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Arsitektur cluster active-active, konfigurasi Patroni/Raft quorum, serta pengujian automated failover zero-data loss.
+          </p>
+</div>
+<!-- Service 5 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">cloud_sync</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-05</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Cloud Database Migration</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Migrasi tanpa downtime (CDC) dari on-premise legacy ke arsitektur cloud terkelola (AWS RDS/Aurora, GCP Cloud SQL).
+          </p>
+</div>
+<!-- Service 6 -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-secondary-container transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-[24px]">lock_reset</span>
+<span class="text-on-surface-variant/50 font-code-telemetry text-[11px]">#SRV-06</span>
+</div>
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Security &amp; Vulnerability Audit</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+            Audit hak akses privilege, enkripsi data at-rest &amp; in-transit, pencegahan SQL Injection mendalam, dan hardening konfigurasi.
+          </p>
+</div>
+</div>
+</section>
+<!-- 4. NEWS SECTION -->
+<section class="space-y-5" id="news">
+<div class="space-y-2">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">feed</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Kabar &amp; Wawasan Teknis</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
+          Publikasi Riset Basis Data
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant/80">
+          Artikel praktis dan benchmark performa terbaru dari tim Principal Engineer Hafidz Company.
+        </p>
+</div>
+<!-- Articles Stack -->
+<div class="space-y-4">
+<!-- Article 1 -->
+<article class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-colors">
+<div class="h-36 w-full relative">
+<img class="w-full h-full object-cover" data-alt="High performance server room hardware rack with glowing red LED diagnostic status lamps and fiber optic cabling inside a modern Indonesian cloud data center with sleek black aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMMVwVOwn7iGK05Kkb4wS-U5WnMotPMAFQU6CkLov6SI91Sj_q2PU_zGC64X2XdFmUEwzMeqXQgmLEWRML0VM14ZAKYYsN0pxd41wgrMiyMTP8XjtbrgTnYekvA0kVG9awp9H1z37aybDzgAx-l6d7HVw1rdZmACKmUXynAbcjfnTZR3d4XHr1Scx1fwxstWvK6MnVmIvn3S835FsC0gUoCKaZKeC81oGDCiIexfQ"/>
+<span class="absolute top-2.5 left-2.5 bg-secondary-container text-white px-2 py-0.5 rounded text-[10px] font-label-sm uppercase font-bold tracking-wide">
+              Studi Kasus
+            </span>
+</div>
+<div class="p-3.5 space-y-2">
+<div class="text-[11px] font-code-telemetry text-on-surface-variant/60">12 Feb 2025 • 6 Min Baca</div>
+<h3 class="font-title-md text-title-md text-white font-semibold leading-snug">
+              Mengatasi Replikasi Lag PostgreSQL pada Transaksi FinTech 15.000 TPS
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Bagaimana penerapan synchronous_commit terdistribusi dan tuning WAL buffer menuntaskan bottleneck replikasi antar zona data center.
+            </p>
+<a class="inline-flex items-center gap-1 text-primary hover:text-white font-label-md text-label-md font-semibold pt-1" href="#contact">
+<span>Baca Selengkapnya</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-colors">
+<div class="h-36 w-full relative">
+<img class="w-full h-full object-cover" data-alt="Close up view of abstract digital data matrix stream visualized in dark obsidian background with sharp laser crimson red data flows and micro lines representing query execution optimization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeXw539Xbborcw4_07OvddMCOnuyQ-eed4lEpvr4e_aFp5KvSq0LCSDL_HClWFYO6ZfusyZ6BJld7kvExAwbhWCNgZtnH7LoIIbgOgBWYntcIXkMKC3Tk7EFi2Oq4ZBdoV5afdcCu40DXlhXLnWjlrTdV-5lSZHGEY00fqL6uHKuas2c-v7fDiksebwmKtKL9sMbrNVmWh-A2gyp4W3D00NVqChqp9BG4ERN5Xry0"/>
+<span class="absolute top-2.5 left-2.5 bg-secondary-container text-white px-2 py-0.5 rounded text-[10px] font-label-sm uppercase font-bold tracking-wide">
+              Optimasi SQL
+            </span>
+</div>
+<div class="p-3.5 space-y-2">
+<div class="text-[11px] font-code-telemetry text-on-surface-variant/60">04 Feb 2025 • 8 Min Baca</div>
+<h3 class="font-title-md text-title-md text-white font-semibold leading-snug">
+              B-Tree vs BRIN: Memilih Struktur Index yang Tepat untuk Log IoT 100 Juta Baris
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Analisis matematis efisiensi memory cache saat memfilter data time-series berurutan dengan pemangkasan ukuran index hingga 85%.
+            </p>
+<a class="inline-flex items-center gap-1 text-primary hover:text-white font-label-md text-label-md font-semibold pt-1" href="#contact">
+<span>Baca Selengkapnya</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-colors">
+<div class="h-36 w-full relative">
+<img class="w-full h-full object-cover" data-alt="Architectural schematic layout of redundant database cluster nodes rendered in high tech dark cyber UI with vivid red connection lines and diagnostic telemetry gauges on a mobile interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANghDUIyZ6gqElqKygSi0IWYF4h6yhgote0jRZLSLUVNUBJDI9xzdvV26pZDPDwLYQZ6hprLk_QgDvzjlso5sIgbUFcPq8xeWd0WHobDGxEFoqfInr-pyKm3t8RwTMYMX2aWkIayj5PyH_6W9mhXu2J3hmloS0Wwg2plAOY7yXQeyU6hfAZIJl0BXOGIZCBFNs4u-9j2eh0CyvCSp-mYKKMPZGuLU8JdHbqjK3-0A"/>
+<span class="absolute top-2.5 left-2.5 bg-secondary-container text-white px-2 py-0.5 rounded text-[10px] font-label-sm uppercase font-bold tracking-wide">
+              Keamanan Data
+            </span>
+</div>
+<div class="p-3.5 space-y-2">
+<div class="text-[11px] font-code-telemetry text-on-surface-variant/60">28 Jan 2025 • 5 Min Baca</div>
+<h3 class="font-title-md text-title-md text-white font-semibold leading-snug">
+              Panduan Kepatuhan UU PDP Indonesia: Enkripsi Kolom Sensitif Tanpa Menurunkan IOPS
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Implementasi transparent data encryption (TDE) dan tokenisasi kredensial pengguna tanpa menurunkan performa kueri agregasi perbankan.
+            </p>
+<a class="inline-flex items-center gap-1 text-primary hover:text-white font-label-md text-label-md font-semibold pt-1" href="#contact">
+<span>Baca Selengkapnya</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</article>
+</div>
+<button class="w-full py-3 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:border-primary/50 transition-colors flex items-center justify-center gap-2">
+<span>Lihat Semua Artikel</span>
+<span class="material-symbols-outlined text-[18px]">library_books</span>
+</button>
+</section>
+<!-- 5. CONTACT & MAP SECTION -->
+<section class="space-y-5" id="contact">
+<div class="space-y-2">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">contact_support</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Hubungi Engineer Kami</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">
+          Konsultasi Arsitektur Database
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant/80">
+          Diskusikan tantangan latensi dan beban skala besar Anda langsung bersama Principal Consultant Hafidz Company.
+        </p>
+</div>
+<!-- Contact Info Cards -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-3.5">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">location_on</span>
+<div>
+<div class="font-label-sm text-label-sm text-white font-semibold">Kantor Pusat</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/80">Menara Standard Chartered Lt. 24, Jl. Prof. DR. Satrio No. 164, Karet Semanggi, Setiabudi, Jakarta Selatan 12930</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">call</span>
+<div>
+<div class="font-label-sm text-label-sm text-white font-semibold">WhatsApp &amp; Telepon Langsung</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/80">+62 21 5289 7700 / +62 811 8900 1234</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">mail</span>
+<div>
+<div class="font-label-sm text-label-sm text-white font-semibold">Email Resmi Perusahaan</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/80">engineering@hafidzcompany.co.id</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">schedule</span>
+<div>
+<div class="font-label-sm text-label-sm text-white font-semibold">Waktu Operasional Support</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/80">Senin - Jumat: 08:30 - 18:00 WIB • Monitoring L3: 24/7/365</div>
+</div>
+</div>
+</div>
+<!-- Quick Contact Form -->
+<form class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-3" onsubmit="event.preventDefault(); alert('Permintaan konsultasi telah diterima. Engineer kami akan menghubungi Anda dalam 1 jam kerja.');">
+<h3 class="font-title-md text-title-md text-white font-semibold mb-1">Kirim Tiket Konsultasi Cepat</h3>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant/80 mb-1" for="nama">Nama Lengkap &amp; Jabatan</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2.5 text-on-surface text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors" id="nama" placeholder="Contoh: Budi Santoso (VP Engineering)" required="" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant/80 mb-1" for="email">Email Korporat</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2.5 text-on-surface text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors" id="email" placeholder="budi@perusahaan.co.id" required="" type="email"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant/80 mb-1" for="dbtype">Jenis Basis Data Utama</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2.5 text-on-surface text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors" id="dbtype">
+<option>PostgreSQL Enterprise</option>
+<option>MySQL / MariaDB Galera</option>
+<option>Oracle Real Application Clusters (RAC)</option>
+<option>Microsoft SQL Server</option>
+<option>MongoDB / NoSQL Engine</option>
+<option>Lainnya / Multi-Database</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant/80 mb-1" for="pesan">Deskripsi Isu atau Target Optimasi</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2.5 text-on-surface text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors" id="pesan" placeholder="Jelaskan lonjakan latensi, query lambat, atau target migrasi Anda..." required="" rows="3"></textarea>
+</div>
+<button class="w-full py-3 px-4 rounded-lg bg-secondary-container text-white font-title-md text-title-md font-semibold text-center hover:bg-error-container active:scale-98 transition-all flex items-center justify-center gap-2 shadow-[0_0_16px_rgba(187,1,2,0.35)]" type="submit">
+<span>Kirim Permintaan Evaluasi</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</form>
+<!-- Embedded Google Maps Interactive/Mobile View -->
+<div class="rounded-xl overflow-hidden border border-outline-variant/30 space-y-0 bg-surface-container-low">
+<div class="p-2.5 bg-surface-container flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex items-center gap-1.5 text-xs text-on-surface font-label-sm">
+<span class="material-symbols-outlined text-primary text-[16px]">pin_drop</span>
+<span>Lokasi: Rasuna Said / Satrio Jakarta Selatan</span>
+</div>
+<span class="font-code-telemetry text-[10px] text-primary">GPS: -6.2215, 106.8227</span>
+</div>
+<div class="relative w-full h-48 bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="A stylized technical dark-mode street map view of Jakarta Rasuna Said and Sudirman business district rendered in obsidian charcoal with glowing crimson street veins and red location pin." data-location="Jakarta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpVJEHXk-cTtQCaBOtu7iJ0z-iIQPGNp6ZvXE77rQq0K8QkGWsc1L1Huoe8WQw62CjniwYPnX33sDoopdhBWhIUJf7OwWtYa7i1hhUypr7iNaFt10wwFS8_dQyYmY2rUWJiDa5iTnLy5MkPJo9dprenItbBo40zhWZSsEVp7wQfB-wV5p1usRb85I1m9mLomfpv8LScgiG75d7uBl2hxMv3k4U92sz8328uYQorKQ"/>
+<div class="absolute bottom-2 left-2 bg-surface/90 border border-outline-variant/40 px-2 py-1 rounded text-[11px] font-label-sm text-white flex items-center gap-1 backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span> PT Hafidz Company Indonesia
+          </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Mobile Floating Quick-Action Bar -->
+<aside class="docked full-width bottom-0 sticky z-40 bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/20 py-2.5 px-4">
+<div class="max-w-md mx-auto flex items-center justify-between gap-3">
+<a class="flex-1 py-2 px-3 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 hover:border-primary" href="https://wa.me/6281189001234" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-primary">chat</span>
+<span>Chat WhatsApp</span>
+</a>
+<a class="flex-1 py-2 px-3 rounded-lg bg-secondary-container text-white font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(187,1,2,0.4)]" href="#contact">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Konsultasi Gratis</span>
+</a>
+</div>
+</aside>
+<!-- Shared Component: Footer -->
+<footer class="w-full block bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/20 dark:border-outline-variant/20">
+<div class="max-w-md mx-auto px-4 py-8 flex flex-col justify-between items-center gap-6 w-full text-center">
+<!-- Brand Logo Container -->
+<div class="flex flex-col items-center gap-2">
+<div class="h-8 px-2 bg-white rounded-lg flex items-center justify-center shadow-sm">
+<img alt="Hafidz Company Logo" class="h-5 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsffOHivwlB0hJCVjY-eg4Zriu1wx2ClMKmfSgYLaDqBTKNI1c21jKfmgtJPolOIFnsUp1zP5t2JRpeGOrwvkFdolqFnsmaK0al7p4PHGcsL2C6_1Yvsp9Sn0L1zudCkwkrSjXR4T8Qd2lEoHsTTmcjASagvpg7w9_Z0AXJ5azObzmqmeSekr4SDoxP6qJHheHSvbzP1S0D4Xg9-ULU2dpSE3sExVc4xZ-hV3hNwr3pKNvTDvbJOOf"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/70 max-w-xs mt-1">
+          Enterprise Database Performance &amp; Intelligence Architecture.
+        </p>
+</div>
+<!-- Footer Links -->
+<nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-label-sm font-label-sm">
+<a class="text-on-surface-variant/70 font-normal hover:text-on-surface transition-colors duration-150" href="#about">Privasi &amp; Kebijakan</a>
+<a class="text-on-surface-variant/70 font-normal hover:text-on-surface transition-colors duration-150" href="#services">Syarat &amp; Ketentuan</a>
+<a class="text-on-surface-variant/70 font-normal hover:text-on-surface transition-colors duration-150" href="#home">Status Sistem</a>
+<a class="text-on-surface-variant/70 font-normal hover:text-on-surface transition-colors duration-150" href="#news">Dokumentasi API</a>
+<a class="text-on-surface-variant/70 font-normal hover:text-on-surface transition-colors duration-150" href="#contact">Pusat Bantuan</a>
+</nav>
+<!-- Social Channels -->
+<div class="flex items-center gap-4 text-on-surface-variant/60">
+<a aria-label="Database Feed" class="hover:text-primary transition-colors" href="#contact">
+<span class="material-symbols-outlined text-[20px]">rss_feed</span>
+</a>
+<a aria-label="Terminal Shell" class="hover:text-primary transition-colors" href="#contact">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</a>
+<a aria-label="Security Shield" class="hover:text-primary transition-colors" href="#contact">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</a>
+</div>
+<!-- Copyright Notice -->
+<div class="font-body-sm text-body-sm text-on-surface-variant/60 border-t border-outline-variant/10 pt-4 w-full">
+        © 2025 PT Hafidz Company Indonesia. Hak Cipta Dilindungi Undang-Undang. Enterprise Database Performance &amp; Intelligence Architecture.
+      </div>
+</div>
+</footer>
+<!-- Light Vanilla Script for Hamburger Menu Toggle -->
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('flex');
+      } else {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+      }
+    });
+
+    // Close menu when tapping links
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+      });
+    });
+  </script>
+</body></html>

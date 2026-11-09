@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d0e10"/>
+      <stop offset="50%" stop-color="#1b1c1e"/>
+      <stop offset="100%" stop-color="#121315"/>
+    </linearGradient>
+    <linearGradient id="crimsonLaser" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff5545" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#bb0102" stop-opacity="0.1"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff5545" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#bgGrad)"/>
+  <circle cx="400" cy="260" r="300" fill="url(#centerGlow)"/>
+  
+  <!-- Server Rack Grid -->
+  <g stroke="#343537" stroke-width="1" opacity="0.4">
+    <line x1="50" y1="0" x2="50" y2="520"/>
+    <line x1="150" y1="0" x2="150" y2="520"/>
+    <line x1="250" y1="0" x2="250" y2="520"/>
+    <line x1="550" y1="0" x2="550" y2="520"/>
+    <line x1="650" y1="0" x2="650" y2="520"/>
+    <line x1="750" y1="0" x2="750" y2="520"/>
+  </g>
+  
+  <!-- Console Display Frames -->
+  <rect x="220" y="80" width="360" height="220" rx="8" fill="#121315" stroke="#ff5545" stroke-width="1.5" stroke-opacity="0.6"/>
+  <rect x="235" y="95" width="330" height="190" rx="4" fill="#1b1c1e"/>
+  
+  <!-- Waveform Inside Monitor -->
+  <path d="M 245,210 Q 280,140 315,190 T 385,130 T 455,200 T 525,120 T 555,160" fill="none" stroke="#ff5545" stroke-width="2.5"/>
+  <path d="M 245,230 Q 295,190 345,230 T 445,170 T 545,220" fill="none" stroke="#f85c48" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+
+  <!-- Telemetry Data Nodes -->
+  <circle cx="315" cy="190" r="4" fill="#ffffff" stroke="#ff5545" stroke-width="2"/>
+  <circle cx="385" cy="130" r="5" fill="#ff5545"/>
+  <circle cx="455" cy="200" r="4" fill="#ffffff" stroke="#bb0102" stroke-width="2"/>
+  <circle cx="525" cy="120" r="5" fill="#ffb4a9"/>
+
+  <!-- Rack LED Indicators -->
+  <g fill="#ff5545" opacity="0.8">
+    <circle cx="100" cy="120" r="3"/>
+    <circle cx="100" cy="140" r="3"/>
+    <circle cx="100" cy="160" r="3"/>
+    <circle cx="100" cy="180" r="3" fill="#34d399"/>
+    <circle cx="100" cy="200" r="3"/>
+    <circle cx="700" cy="120" r="3"/>
+    <circle cx="700" cy="140" r="3" fill="#34d399"/>
+    <circle cx="700" cy="160" r="3"/>
+    <circle cx="700" cy="180" r="3"/>
+  </g>
+
+  <!-- Laser Scanline -->
+  <line x1="0" y1="260" x2="800" y2="260" stroke="url(#crimsonLaser)" stroke-width="1.5"/>
+
+  <!-- Text Overlay -->
+  <text x="400" y="340" fill="#e3e2e5" font-family="Plus Jakarta Sans, sans-serif" font-size="18" font-weight="700" text-anchor="middle">HAFIDZ NOC TELEMETRY ARCHITECTURE</text>
+  <text x="400" y="365" fill="#eabcb5" font-family="Inter, sans-serif" font-size="13" text-anchor="middle">24/7 Enterprise Database Observability &amp; Latency Guard</text>
+  <text x="400" y="420" fill="#ffb4a9" font-family="monospace" font-size="12" text-anchor="middle">LATENCY: 0.42ms | CLUSTER: 8 NODE REDUNDANCY | 99.99% SLA</text>
+</svg>

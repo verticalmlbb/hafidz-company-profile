@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 18 19 21;
+    --foreground: 227 226 229;
+  }
+
+  body {
+    background-color: #121315;
+    color: #e3e2e5;
+    font-family: var(--font-inter), sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Material Symbols font configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Glowing Crimson Borders and Shadows */
+.crimson-glow {
+  box-shadow: 0 0 35px -5px rgba(255, 85, 69, 0.25);
+}
+
+.crimson-border-glow {
+  border: 1px solid rgba(255, 85, 69, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 20px rgba(187, 1, 2, 0.2);
+}
+
+.horizon-line {
+  background: linear-gradient(90deg, transparent 0%, #ff5545 50%, transparent 100%);
+}
+
+/* Live Waveform and Scanline Animations */
+@keyframes radarScan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(800%); }
+}
+
+.animate-radar-scan {
+  animation: radarScan 4s linear infinite;
+}
+
+@keyframes pulseNode {
+  0%, 100% { r: 3.5; opacity: 0.9; }
+  50% { r: 6; opacity: 0.4; }
+}
+
+.animate-pulse-node {
+  animation: pulseNode 2s ease-in-out infinite;
+}
+
+@keyframes liveDataFlow {
+  0% { stroke-dashoffset: 600; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.chart-flow-line {
+  stroke-dasharray: 600;
+  animation: liveDataFlow 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.blinking-cursor {
+  animation: blinkCursor 0.8s infinite;
+}
+
+@keyframes scanProgress {
+  0% { width: 12%; }
+  50% { width: 85%; }
+  100% { width: 12%; }
+}
+
+.animate-scan-progress {
+  animation: scanProgress 5s ease-in-out infinite;
+}
