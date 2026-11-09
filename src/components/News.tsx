@@ -1,8 +1,44 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { siteConfig } from "@/config/site";
+import { siteConfig, NewsArticle } from "@/config/site";
 
 export default function News() {
+  const [articles, setArticles] = useState<NewsArticle[]>(siteConfig.news);
+
+  useEffect(() => {
+    async function loadLatestNews() {
+      try {
+        const res = await fetch("/api/public/news");
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          const mapped: NewsArticle[] = json.data.map((item: any, idx: number) => ({
+            id: item.id || String(idx),
+            slug: item.slug || `article-${idx}`,
+            title: item.title,
+            excerpt: item.excerpt,
+            date: item.created_at
+              ? new Date(item.created_at).toLocaleDateString("id-ID", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "Terbaru",
+            readTime: "5 min baca",
+            category: "Wawasan Database",
+            thumbnail: item.thumbnail_path || "/images/news-1.svg",
+          }));
+          setArticles(mapped);
+        }
+      } catch {
+        // Gunakan fallback artikel bawaan
+      }
+    }
+    loadLatestNews();
+  }, []);
+
   return (
     <section
       id="news"
@@ -36,16 +72,16 @@ export default function News() {
           </div>
         </div>
 
-        {/* 3 Articles Grid */}
+        {/* Dynamic Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {siteConfig.news.map((article) => (
+          {articles.slice(0, 3).map((article) => (
             <article
               key={article.id}
               className="rounded-lg overflow-hidden bg-surface-container-low border border-outline-variant/30 flex flex-col group hover:border-primary/40 transition-colors"
             >
               <div className="relative h-48 overflow-hidden bg-surface-container">
                 <Image
-                  src={article.thumbnail.replace(/\.jpg$/, ".svg")}
+                  src={article.thumbnail}
                   alt={article.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

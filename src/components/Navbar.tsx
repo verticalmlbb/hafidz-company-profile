@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string; role: string } | null>(null);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+        if (data.authenticated && data.user) {
+          setUser(data.user);
+        }
+      } catch {
+        // Not logged in
+      }
+    }
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+    window.location.reload();
+  };
 
   return (
     <header className="bg-surface/80 backdrop-blur-md top-0 sticky z-50 border-b border-outline-variant/30">
@@ -46,12 +68,37 @@ export default function Navbar() {
 
         {/* Right Trailing Actions (Desktop) */}
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/login"
-            className="text-on-surface hover:text-primary transition-colors duration-150 text-label-md font-label-md font-medium px-3 py-2 active:scale-95"
-          >
-            Login
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-2">
+              {user.role === "admin" ? (
+                <Link
+                  href="/dashboard"
+                  className="px-3 py-1.5 rounded bg-surface-container border border-primary/40 text-primary hover:bg-primary-container hover:text-on-primary-container transition-colors text-xs font-semibold flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-sm">dashboard</span>
+                  <span>Dashboard Admin</span>
+                </Link>
+              ) : (
+                <span className="text-xs text-on-surface-variant font-medium px-2">
+                  Halo, {user.name}
+                </span>
+              )}
+              <button
+                onClick={handleLogout}
+                className="text-on-surface-variant hover:text-error transition-colors text-xs font-medium px-2 py-1"
+              >
+                Keluar
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="text-on-surface hover:text-primary transition-colors duration-150 text-label-md font-label-md font-medium px-3 py-2 active:scale-95"
+            >
+              Login
+            </Link>
+          )}
+
           <Link
             href="#contact"
             className="bg-primary-container text-on-primary-container font-semibold hover:bg-secondary-container hover:text-white transition-all duration-200 active:scale-95 text-label-md font-label-md px-4 py-2 rounded shadow-lg shadow-secondary-container/20 flex items-center gap-1.5 border border-primary/20"
@@ -96,13 +143,36 @@ export default function Navbar() {
             ))}
           </nav>
           <div className="pt-2 flex flex-col gap-2">
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-center py-2.5 rounded border border-outline-variant/40 text-on-surface font-medium hover:border-primary transition-colors text-sm"
-            >
-              Login Akun
-            </Link>
+            {user ? (
+              <>
+                {user.role === "admin" && (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-center py-2.5 rounded bg-surface-container border border-primary/40 text-primary font-semibold text-sm"
+                  >
+                    Buka Dashboard Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="text-center py-2 rounded text-error text-sm font-medium"
+                >
+                  Keluar dari Akun
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-center py-2.5 rounded border border-outline-variant/40 text-on-surface font-medium hover:border-primary transition-colors text-sm"
+              >
+                Login Akun
+              </Link>
+            )}
             <Link
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
