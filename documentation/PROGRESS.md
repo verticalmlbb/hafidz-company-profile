@@ -1,17 +1,17 @@
 # Progres Proyek - Hafidz's Company
 
-Terakhir diperbarui: 9 November 2026
-Posisi saat ini: **Step 1 - Landing Page**
+Terakhir diperbarui: 9 November 2026  
+Posisi saat ini: **Menunggu Konfirmasi Pengguna untuk Step 1 (Landing Page)**
 
 ## Checklist
 - [x] Inisiasi (data usaha & desain terkumpul)
-- [ ] STEP 1 - Landing page
-  - [ ] Hero
-  - [ ] About
-  - [ ] Service
-  - [ ] Berita/Post
-  - [ ] Contact + Google Maps
-  - [ ] Responsif & aksesibilitas dicek
+- [x] STEP 1 - Landing page
+  - [x] Hero (Headline, CTAs, Telemetry Pill, Interactive SVG Spline Chart & live metric simulation)
+  - [x] About (Visi misi ketahanan data Indonesia, 3 keunggulan teknis, visual NOC Lab & SLA badge)
+  - [x] Service (6 Kartu Bento Grid layanan arsitektur & tuning database dengan micro-interactions)
+  - [x] Berita/Post (3 Kartu artikel riset latensi, eBPF & machine learning)
+  - [x] Contact + Google Maps (Info kontak, jam kerja 24/7, form konsultasi, & peta embed Menara Cyber 2)
+  - [x] Responsif (Mobile hamburger drawer & desktop layout) & aksesibilitas (ARIA labels, kontras, semantic tags) dicek
   - [ ] Dikonfirmasi pengguna
 - [ ] STEP 2 - User management & dashboard
   - [ ] Apps Script (code.gs, setup.gs) + inisiasi tabel
@@ -28,9 +28,17 @@ Posisi saat ini: **Step 1 - Landing Page**
 
 ## Catatan & Keputusan
 - **Identitas Usaha**: Hafidz's Company — Enterprise Database Performance & Intelligence Architecture.
-- **Arah Desain**: Menggunakan desain resmi dari folder `design-reference` bertema *Obsidian Crimson Precision* (Dark mode dengan nuansa obsidian `#121315`, aksen crimson `#ff5545` dan `#bb0102`, typography Plus Jakarta Sans + Inter + Monospace telemetry).
-- **Lokasi Peta**: Google Maps embed disematkan pada section kontak.
-- **Teknologi**: Next.js App Router + Tailwind CSS (Vercel Friendly).
+- **Arah Desain**: Mengadopsi desain resmi bertema *Obsidian Crimson Precision* dari `design-reference` (Dark mode obsidian `#121315`, aksen crimson `#ff5545` & `#bb0102`, typography Plus Jakarta Sans + Inter + Monospace telemetry).
+- **Aset Gambar**: Logo resmi pengguna disematkan di header & footer (`/images/logo.jpg`), serta seluruh visual ilustrasi teknis lokal berformat SVG vektor di `public/images/`.
+- **Konfigurasi Terpusat**: Seluruh konten teks & info kontak terpusat di `src/config/site.ts`.
+- **Build Status**: Lolos kompilasi produksi `next build` (0 error, static prerendered 5/5 routes).
 
 ## Cara Menjalankan
-- Jalankan `npm run dev` pada terminal lalu buka `http://localhost:3000`.
+1. Jalankan development server:
+   ```bash
+   npm run dev
+   ```
+2. Buka di browser:
+   ```
+   http://localhost:3000
+   ```
