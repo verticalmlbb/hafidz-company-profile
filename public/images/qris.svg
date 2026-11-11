@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" width="100%" height="100%">
+  <defs>
+    <style>
+      .bold { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 800; }
+      .regular { font-family: 'Inter', Arial, sans-serif; font-weight: 500; }
+      .mono { font-family: 'Courier New', monospace; font-weight: 700; }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Card Background -->
+  <rect x="10" y="10" width="400" height="540" rx="16" fill="#ffffff" filter="url(#shadow)"/>
+  
+  <!-- Header Bar -->
+  <rect x="10" y="10" width="400" height="75" rx="16" fill="#ffffff"/>
+  <rect x="10" y="70" width="400" height="15" fill="#ffffff"/>
+
+  <!-- QRIS Official Banner -->
+  <g transform="translate(145, 24)">
+    <rect x="-10" y="0" width="150" height="42" rx="6" fill="#1b1c1e"/>
+    <text x="65" y="27" font-size="20" fill="#ffffff" text-anchor="middle" class="bold" letter-spacing="2">QRIS</text>
+    <!-- GPN Mini logo mark -->
+    <circle cx="12" cy="21" r="5" fill="#ff5545"/>
+    <circle cx="123" cy="21" r="5" fill="#ff5545"/>
+  </g>
+
+  <!-- Subtitle -->
+  <text x="210" y="90" font-size="10" fill="#75777a" text-anchor="middle" class="regular" letter-spacing="1">
+    PEMBAYARAN DIGITAL NASIONAL INDONESIA
+  </text>
+
+  <!-- Merchant Info -->
+  <line x1="30" y1="105" x2="390" y2="105" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="210" y="128" font-size="15" fill="#121315" text-anchor="middle" class="bold" letter-spacing="0.5">
+    HAFIDZ'S COMPANY
+  </text>
+  <text x="210" y="145" font-size="11" fill="#505255" text-anchor="middle" class="mono">
+    NMID : ID1020261111990 · A01
+  </text>
+
+  <!-- QR Code Frame -->
+  <rect x="55" y="160" width="310" height="310" rx="12" fill="#fafafa" stroke="#ff5545" stroke-width="2"/>
+
+  <!-- QR Corner Target 1 (Top-Left) -->
+  <g transform="translate(80, 185)">
+    <rect x="0" y="0" width="56" height="56" rx="6" fill="#121315"/>
+    <rect x="8" y="8" width="40" height="40" rx="4" fill="#ffffff"/>
+    <rect x="16" y="16" width="24" height="24" rx="2" fill="#bb0102"/>
+  </g>
+
+  <!-- QR Corner Target 2 (Top-Right) -->
+  <g transform="translate(284, 185)">
+    <rect x="0" y="0" width="56" height="56" rx="6" fill="#121315"/>
+    <rect x="8" y="8" width="40" height="40" rx="4" fill="#ffffff"/>
+    <rect x="16" y="16" width="24" height="24" rx="2" fill="#bb0102"/>
+  </g>
+
+  <!-- QR Corner Target 3 (Bottom-Left) -->
+  <g transform="translate(80, 389)">
+    <rect x="0" y="0" width="56" height="56" rx="6" fill="#121315"/>
+    <rect x="8" y="8" width="40" height="40" rx="4" fill="#ffffff"/>
+    <rect x="16" y="16" width="24" height="24" rx="2" fill="#bb0102"/>
+  </g>
+
+  <!-- QR Matrix Random Patterns -->
+  <g fill="#121315">
+    <!-- Center Logo Plaque -->
+    <rect x="180" y="285" width="60" height="60" rx="8" fill="#121315"/>
+    <circle cx="210" cy="315" r="22" fill="#ff5545"/>
+    <text x="210" y="321" font-size="14" fill="#ffffff" text-anchor="middle" class="bold">H</text>
+
+    <!-- Data Blocks -->
+    <rect x="150" y="185" width="12" height="12"/>
+    <rect x="170" y="185" width="24" height="12"/>
+    <rect x="205" y="185" width="12" height="12"/>
+    <rect x="230" y="185" width="12" height="24"/>
+    <rect x="255" y="185" width="12" height="12"/>
+
+    <rect x="150" y="205" width="24" height="12"/>
+    <rect x="185" y="205" width="12" height="12"/>
+    <rect x="210" y="205" width="12" height="24"/>
+    <rect x="245" y="205" width="24" height="12"/>
+
+    <rect x="150" y="230" width="12" height="24"/>
+    <rect x="175" y="230" width="24" height="12"/>
+    <rect x="230" y="230" width="12" height="12"/>
+    <rect x="255" y="230" width="24" height="24"/>
+
+    <rect x="80" y="255" width="12" height="24"/>
+    <rect x="105" y="255" width="24" height="12"/>
+    <rect x="140" y="260" width="24" height="12"/>
+    <rect x="270" y="260" width="24" height="12"/>
+    <rect x="305" y="255" width="12" height="24"/>
+    <rect x="330" y="255" width="12" height="12"/>
+
+    <rect x="80" y="290" width="24" height="12"/>
+    <rect x="115" y="290" width="12" height="24"/>
+    <rect x="140" y="285" width="24" height="12"/>
+    <rect x="255" y="285" width="12" height="12"/>
+    <rect x="280" y="290" width="24" height="12"/>
+    <rect x="315" y="285" width="24" height="12"/>
+
+    <rect x="80" y="325" width="12" height="12"/>
+    <rect x="105" y="325" width="24" height="12"/>
+    <rect x="140" y="315" width="12" height="24"/>
+    <rect x="255" y="315" width="12" height="24"/>
+    <rect x="280" y="325" width="12" height="12"/>
+    <rect x="305" y="325" width="36" height="12"/>
+
+    <rect x="80" y="350" width="36" height="12"/>
+    <rect x="130" y="350" width="12" height="24"/>
+    <rect x="155" y="350" width="24" height="12"/>
+    <rect x="190" y="355" width="36" height="12"/>
+    <rect x="240" y="350" width="24" height="12"/>
+    <rect x="280" y="350" width="24" height="12"/>
+    <rect x="315" y="350" width="24" height="24"/>
+
+    <rect x="150" y="380" width="24" height="12"/>
+    <rect x="185" y="380" width="12" height="24"/>
+    <rect x="210" y="380" width="24" height="12"/>
+    <rect x="245" y="380" width="12" height="12"/>
+    <rect x="270" y="380" width="12" height="24"/>
+    <rect x="295" y="380" width="24" height="12"/>
+
+    <rect x="150" y="410" width="12" height="24"/>
+    <rect x="175" y="410" width="24" height="12"/>
+    <rect x="210" y="405" width="12" height="12"/>
+    <rect x="235" y="410" width="24" height="12"/>
+    <rect x="270" y="415" width="36" height="12"/>
+    <rect x="320" y="410" width="24" height="12"/>
+
+    <rect x="150" y="435" width="36" height="12"/>
+    <rect x="200" y="430" width="24" height="12"/>
+    <rect x="235" y="435" width="12" height="12"/>
+    <rect x="260" y="435" width="24" height="12"/>
+    <rect x="295" y="435" width="48" height="12"/>
+  </g>
+
+  <!-- Footer Instructions -->
+  <text x="210" y="495" font-size="11" fill="#1b1c1e" text-anchor="middle" class="bold">
+    BCA · MANDIRI · BRI · BNI · BSI · GO-PAY · OVO · DANA · SHOPEEPAY
+  </text>
+  <text x="210" y="515" font-size="9.5" fill="#75777a" text-anchor="middle" class="regular">
+    Buka aplikasi m-Banking atau e-Wallet apapun, pilih menu Scan QRIS
+  </text>
+  <text x="210" y="530" font-size="8.5" fill="#a0a2a5" text-anchor="middle" class="mono">
+    VERIFIKASI SISTEM OTOMATIS TIKET HAFIDZ'S COMPANY
+  </text>
+</svg>
+

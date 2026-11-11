@@ -86,3 +86,93 @@
   animation: scanProgress 5s ease-in-out infinite;
 }
 
+/* ============================
+   LOADING SCREEN ANIMATIONS
+   ============================ */
+
+/* Grid hex / dot fade-in */
+@keyframes gridDotFade {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.18; }
+}
+.animate-grid-dot {
+  animation: gridDotFade 3s ease-in-out infinite;
+}
+
+/* Spinning outer ring */
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-ring {
+  animation: spinRing 2.4s linear infinite;
+  transform-origin: center;
+}
+
+/* Counter-spin inner ring */
+@keyframes spinRingReverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+.animate-spin-ring-reverse {
+  animation: spinRingReverse 1.8s linear infinite;
+  transform-origin: center;
+}
+
+/* Progress bar fill */
+@keyframes progressFill {
+  0%   { width: 0%; }
+  10%  { width: 15%; }
+  30%  { width: 42%; }
+  55%  { width: 68%; }
+  80%  { width: 88%; }
+  100% { width: 100%; }
+}
+.animate-progress-fill {
+  animation: progressFill 2.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Terminal text typewriter */
+@keyframes terminalFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-terminal-line {
+  animation: terminalFadeIn 0.4s ease forwards;
+  opacity: 0;
+}
+
+/* Scanline sweep */
+@keyframes scanSweep {
+  0%   { top: -4px; opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+.animate-scan-sweep {
+  animation: scanSweep 2.2s linear infinite;
+}
+
+/* Particle float */
+@keyframes floatParticle {
+  0%   { transform: translateY(0) scale(1); opacity: 0.6; }
+  50%  { transform: translateY(-18px) scale(1.3); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 0.6; }
+}
+
+/* Loading screen fade-out */
+@keyframes loadingFadeOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-loading-fade-out {
+  animation: loadingFadeOut 0.7s ease-out forwards;
+}
+
+/* Logo pulse glow */
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 85, 69, 0); }
+  50%       { box-shadow: 0 0 0 12px rgba(255, 85, 69, 0.15); }
+}
+.animate-logo-pulse {
+  animation: logoPulse 2s ease-in-out infinite;
+}
+

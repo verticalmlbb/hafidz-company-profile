@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
+import PageWrapper from "@/components/PageWrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hafidzcompany.id"),
@@ -56,7 +57,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-surface antialiased min-h-screen flex flex-col font-sans selection:bg-secondary-container selection:text-white overflow-x-hidden">
-        {children}
+        <PageWrapper>{children}</PageWrapper>
       </body>
     </html>
   );

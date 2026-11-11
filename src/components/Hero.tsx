@@ -71,13 +71,13 @@ export default function Hero() {
           {/* Action CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
-              href="#contact"
+              href="/booking"
               className="w-full sm:w-auto px-7 py-3.5 rounded bg-primary-container text-on-primary-container font-semibold hover:bg-secondary-container hover:text-white transition-all duration-200 active:scale-95 shadow-lg shadow-primary-container/30 flex items-center justify-center gap-2 border-t border-white/20"
             >
               <span className="material-symbols-outlined text-lg" aria-hidden="true">
-                bolt
+                calendar_month
               </span>
-              <span>Mulai Analisis Gratis</span>
+              <span>Booking Konsultasi &amp; Audit</span>
             </Link>
             <Link
               href="#services"
@@ -86,7 +86,7 @@ export default function Hero() {
               <span className="material-symbols-outlined text-lg" aria-hidden="true">
                 play_circle
               </span>
-              <span>Jadwalkan Demo Langsung</span>
+              <span>Pelajari Layanan Lengkap</span>
             </Link>
           </div>
 

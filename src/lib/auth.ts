@@ -93,3 +93,4 @@ export async function getCurrentUser(): Promise<UserSession | null> {
   if (!cookie || !cookie.value) return null;
   return verifySessionToken(cookie.value);
 }
+

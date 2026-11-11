@@ -64,6 +64,15 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+          {user && (
+            <Link
+              href="/pesanan"
+              className="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1 text-label-md font-label-md flex items-center gap-1"
+            >
+              <span className="material-symbols-outlined text-sm">receipt_long</span>
+              <span>Pesanan Anda</span>
+            </Link>
+          )}
         </nav>
 
         {/* Right Trailing Actions (Desktop) */}
@@ -100,16 +109,16 @@ export default function Navbar() {
           )}
 
           <Link
-            href="#contact"
+            href="/booking"
             className="bg-primary-container text-on-primary-container font-semibold hover:bg-secondary-container hover:text-white transition-all duration-200 active:scale-95 text-label-md font-label-md px-4 py-2 rounded shadow-lg shadow-secondary-container/20 flex items-center gap-1.5 border border-primary/20"
           >
             <span
               className="material-symbols-outlined text-sm"
               aria-hidden="true"
             >
-              support_agent
+              calendar_month
             </span>
-            <span>Konsultasi Gratis</span>
+            <span>Booking Konsultasi</span>
           </Link>
         </div>
 
@@ -141,6 +150,16 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            {user && (
+              <Link
+                href="/pesanan"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-primary hover:text-primary py-2 text-base font-medium transition-colors border-b border-outline-variant/20 last:border-b-0 flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-sm">receipt_long</span>
+                <span>Pesanan Anda</span>
+              </Link>
+            )}
           </nav>
           <div className="pt-2 flex flex-col gap-2">
             {user ? (
@@ -174,14 +193,14 @@ export default function Navbar() {
               </Link>
             )}
             <Link
-              href="#contact"
+              href="/booking"
               onClick={() => setMobileMenuOpen(false)}
               className="text-center py-2.5 rounded bg-primary-container text-on-primary-container font-semibold hover:bg-secondary-container hover:text-white transition-colors text-sm shadow flex items-center justify-center gap-1.5"
             >
               <span className="material-symbols-outlined text-sm" aria-hidden="true">
-                support_agent
+                calendar_month
               </span>
-              <span>Konsultasi Gratis</span>
+              <span>Booking Konsultasi</span>
             </Link>
           </div>
         </div>

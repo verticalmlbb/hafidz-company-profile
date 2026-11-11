@@ -5,3 +5,4 @@ export async function POST() {
   await clearAuthCookie();
   return NextResponse.json({ success: true, message: "Berhasil logout." });
 }
+

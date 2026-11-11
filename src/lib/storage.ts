@@ -75,3 +75,4 @@ export async function deleteFile(filePath: string): Promise<boolean> {
     return false;
   }
 }
+

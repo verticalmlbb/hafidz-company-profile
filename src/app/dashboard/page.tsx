@@ -34,9 +34,27 @@ interface NewsItem {
   created_at: string;
 }
 
+interface OrderItem {
+  id: string;
+  user_id: string;
+  user_email: string;
+  client_name: string;
+  company_name: string;
+  whatsapp: string;
+  service_type: string;
+  db_type: string;
+  booking_date: string;
+  notes: string;
+  amount: number;
+  status: string;
+  rejection_reason?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"overview" | "users" | "roles" | "news">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "roles" | "news" | "orders">("overview");
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,6 +63,14 @@ export default function DashboardPage() {
   const [userSearch, setUserSearch] = useState("");
   const [roles, setRoles] = useState<RoleItem[]>([]);
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [orders, setOrders] = useState<OrderItem[]>([]);
+  const [orderFilter, setOrderFilter] = useState<"all" | "menunggu_konfirmasi" | "dikonfirmasi" | "ditolak">("all");
+  const [orderSearch, setOrderSearch] = useState("");
+  const [rejectModal, setRejectModal] = useState<{ open: boolean; orderId: string; reason: string }>({
+    open: false,
+    orderId: "",
+    reason: "",
+  });
 
   // Modals & alerts
   const [alertMsg, setAlertMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -82,22 +108,25 @@ export default function DashboardPage() {
         }
         setCurrentUser(meData.user);
 
-        // Fetch users, roles, news
-        const [usersRes, rolesRes, newsRes] = await Promise.all([
+        // Fetch users, roles, news, orders
+        const [usersRes, rolesRes, newsRes, ordersRes] = await Promise.all([
           fetch("/api/admin/users"),
           fetch("/api/admin/roles"),
           fetch("/api/admin/news"),
+          fetch("/api/admin/orders"),
         ]);
 
-        const [usersJson, rolesJson, newsJson] = await Promise.all([
+        const [usersJson, rolesJson, newsJson, ordersJson] = await Promise.all([
           usersRes.json(),
           rolesRes.json(),
           newsRes.json(),
+          ordersRes.json(),
         ]);
 
         if (usersJson.success) setUsers(usersJson.data);
         if (rolesJson.success) setRoles(rolesJson.data);
         if (newsJson.success) setNews(newsJson.data);
+        if (ordersJson.success && Array.isArray(ordersJson.orders)) setOrders(ordersJson.orders);
       } catch (err) {
         console.error("Gagal memuat data dashboard:", err);
       } finally {
@@ -359,6 +388,72 @@ export default function DashboardPage() {
     setShowNewsModal(true);
   };
 
+  // Order actions
+  const handleConfirmOrder = async (orderId: string) => {
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "confirm" }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setOrders(
+          orders.map((o) => (o.id === orderId ? { ...o, status: "dikonfirmasi" } : o))
+        );
+        showNotification("success", `Tiket ${orderId} berhasil dikonfirmasi!`);
+      } else {
+        showNotification("error", data.error || "Gagal mengonfirmasi tiket.");
+      }
+    } catch {
+      showNotification("error", "Koneksi ke server gagal.");
+    }
+  };
+
+  const handleRejectOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const orderId = rejectModal.orderId;
+    const reason = rejectModal.reason;
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reject", reason }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setOrders(
+          orders.map((o) =>
+            o.id === orderId
+              ? { ...o, status: "ditolak", rejection_reason: reason }
+              : o
+          )
+        );
+        setRejectModal({ open: false, orderId: "", reason: "" });
+        showNotification("success", `Tiket ${orderId} telah ditolak.`);
+      } else {
+        showNotification("error", data.error || "Gagal menolak tiket.");
+      }
+    } catch {
+      showNotification("error", "Koneksi ke server gagal.");
+    }
+  };
+
+  const filteredOrders = orders.filter((o) => {
+    const matchesFilter =
+      orderFilter === "all" ? true : o.status === orderFilter;
+    const matchesSearch =
+      o.id.toLowerCase().includes(orderSearch.toLowerCase()) ||
+      o.client_name.toLowerCase().includes(orderSearch.toLowerCase()) ||
+      o.company_name.toLowerCase().includes(orderSearch.toLowerCase()) ||
+      o.whatsapp.includes(orderSearch);
+    return matchesFilter && matchesSearch;
+  });
+
+  const pendingOrdersCount = orders.filter(
+    (o) => o.status === "menunggu_konfirmasi"
+  ).length;
+
   const filteredUsers = users.filter(
     (u) =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
@@ -504,6 +599,23 @@ export default function DashboardPage() {
             <span className="material-symbols-outlined text-base">article</span>
             <span>CRUD Berita ({news.length})</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab("orders")}
+            className={`px-4 py-2 text-xs font-semibold rounded-t flex items-center gap-2 transition-colors border-b-2 ${
+              activeTab === "orders"
+                ? "border-primary text-primary bg-surface-container/50"
+                : "border-transparent text-on-surface-variant hover:text-on-surface"
+            }`}
+          >
+            <span className="material-symbols-outlined text-base">receipt_long</span>
+            <span>Kelola Pesanan ({orders.length})</span>
+            {pendingOrdersCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-black text-[10px] font-bold">
+                {pendingOrdersCount} baru
+              </span>
+            )}
+          </button>
         </div>
 
         {/* TAB 1: OVERVIEW */}
@@ -521,7 +633,22 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Stat Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div
+                onClick={() => setActiveTab("orders")}
+                className="p-5 rounded-lg bg-surface-container-low border border-outline-variant/30 hover:border-primary/50 transition-colors cursor-pointer space-y-2 group"
+              >
+                <div className="flex items-center justify-between text-xs text-on-surface-variant uppercase font-medium">
+                  <span>Pesanan / Tiket</span>
+                  <span className="material-symbols-outlined text-primary text-lg group-hover:scale-110 transition-transform">receipt_long</span>
+                </div>
+                <div className="text-3xl font-bold text-on-surface">{orders.length}</div>
+                <div className="text-[11px] text-amber-400 font-mono flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span>{pendingOrdersCount} Menunggu Konfirmasi</span>
+                </div>
+              </div>
+
               <div className="p-5 rounded-lg bg-surface-container-low border border-outline-variant/30 space-y-2">
                 <div className="flex items-center justify-between text-xs text-on-surface-variant uppercase font-medium">
                   <span>Total Pengguna</span>
@@ -853,6 +980,218 @@ export default function DashboardPage() {
             </div>
           </div>
         )}
+
+        {/* TAB 4: KELOLA PESANAN & PEMBAYARAN QRIS */}
+        {activeTab === "orders" && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base font-bold text-on-surface flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-xl">
+                    receipt_long
+                  </span>
+                  <span>Kelola Tiket Pesanan & Pembayaran QRIS</span>
+                </h3>
+                <p className="text-xs text-on-surface-variant mt-0.5">
+                  Verifikasi bukti transfer QRIS dan kelola jadwal sesi konsultasi klien database Anda.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/booking"
+                  target="_blank"
+                  className="px-3.5 py-2 rounded bg-surface-container border border-outline-variant/40 hover:border-primary text-xs font-semibold text-on-surface flex items-center gap-1.5 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-sm">open_in_new</span>
+                  <span>Form Booking Publik</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Filter Pills & Search */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                {[
+                  { key: "all", label: `Semua (${orders.length})` },
+                  {
+                    key: "menunggu_konfirmasi",
+                    label: `Menunggu (${pendingOrdersCount})`,
+                  },
+                  {
+                    key: "dikonfirmasi",
+                    label: `Dikonfirmasi (${orders.filter((o) => o.status === "dikonfirmasi").length})`,
+                  },
+                  {
+                    key: "ditolak",
+                    label: `Ditolak (${orders.filter((o) => o.status === "ditolak").length})`,
+                  },
+                ].map((tab) => (
+                  <button
+                    key={tab.key}
+                    onClick={() => setOrderFilter(tab.key as any)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 flex items-center gap-1.5 ${
+                      orderFilter === tab.key
+                        ? "bg-primary-container text-on-primary-container font-semibold"
+                        : "bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface"
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative sm:w-64">
+                <input
+                  type="text"
+                  placeholder="Cari ID tiket, nama, WA..."
+                  value={orderSearch}
+                  onChange={(e) => setOrderSearch(e.target.value)}
+                  className="w-full bg-surface-container-low border border-outline-variant/40 rounded-lg pl-8 pr-3 py-1.5 text-xs text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary"
+                />
+                <span className="material-symbols-outlined absolute left-2.5 top-2 text-on-surface-variant/70 text-sm">
+                  search
+                </span>
+              </div>
+            </div>
+
+            {/* Orders Table */}
+            <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-surface-container border-b border-outline-variant/30 text-on-surface-variant uppercase font-mono text-[10px]">
+                    <tr>
+                      <th className="px-4 py-3">ID Tiket</th>
+                      <th className="px-4 py-3">Klien & Instansi</th>
+                      <th className="px-4 py-3">Kontak WA</th>
+                      <th className="px-4 py-3">Layanan & DB</th>
+                      <th className="px-4 py-3">Jadwal</th>
+                      <th className="px-4 py-3">Biaya</th>
+                      <th className="px-4 py-3">Status</th>
+                      <th className="px-4 py-3 text-right">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant/15 text-on-surface">
+                    {filteredOrders.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="px-4 py-12 text-center text-on-surface-variant">
+                          <span className="material-symbols-outlined text-4xl block mb-2 text-on-surface-variant/40">
+                            receipt_long
+                          </span>
+                          Tidak ada tiket pesanan yang sesuai dengan filter.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredOrders.map((ord) => {
+                        const isPending = ord.status === "menunggu_konfirmasi";
+                        const isConfirmed = ord.status === "dikonfirmasi";
+                        const isRejected = ord.status === "ditolak";
+                        const cleanPhone = ord.whatsapp.replace(/[^0-9]/g, "");
+                        const waUrl = `https://wa.me/${cleanPhone.startsWith("0") ? "62" + cleanPhone.slice(1) : cleanPhone}?text=${encodeURIComponent(
+                          `Halo ${ord.client_name}, kami dari Hafidz's Company terkait tiket konsultasi #${ord.id}.`
+                        )}`;
+
+                        return (
+                          <tr key={ord.id} className="hover:bg-surface-container/30 transition-colors">
+                            <td className="px-4 py-3 font-mono font-bold text-primary whitespace-nowrap">
+                              <Link
+                                href={`/pesanan/${ord.id}`}
+                                target="_blank"
+                                className="hover:underline flex items-center gap-1"
+                              >
+                                <span>{ord.id}</span>
+                                <span className="material-symbols-outlined text-[12px] opacity-70">open_in_new</span>
+                              </Link>
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="font-semibold text-on-surface">{ord.client_name}</div>
+                              <div className="text-[11px] text-on-surface-variant/80">{ord.company_name || "-"}</div>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              <div className="font-mono text-[11px]">{ord.whatsapp}</div>
+                              <a
+                                href={waUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[10px] text-emerald-400 hover:underline mt-0.5"
+                              >
+                                <span className="material-symbols-outlined text-[11px]">chat</span>
+                                <span>Chat WA</span>
+                              </a>
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="font-medium text-on-surface">{ord.service_type}</div>
+                              <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded bg-surface border border-outline-variant/30 text-[10px] font-mono text-primary">
+                                {ord.db_type}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap font-mono text-[11px]">
+                              {ord.booking_date}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap font-mono font-semibold text-on-surface">
+                              {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(ord.amount)}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {isPending && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 font-semibold text-[10px]">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                                  Menunggu
+                                </span>
+                              )}
+                              {isConfirmed && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-semibold text-[10px]">
+                                  <span className="material-symbols-outlined text-[12px]">check</span>
+                                  Dikonfirmasi
+                                </span>
+                              )}
+                              {isRejected && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/20 border border-error/40 text-error font-semibold text-[10px]" title={ord.rejection_reason}>
+                                  <span className="material-symbols-outlined text-[12px]">cancel</span>
+                                  Ditolak
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="flex items-center justify-end gap-1.5">
+                                {isPending && (
+                                  <>
+                                    <button
+                                      onClick={() => handleConfirmOrder(ord.id)}
+                                      className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[11px] flex items-center gap-1 transition-colors"
+                                      title="Konfirmasi Pembayaran QRIS"
+                                    >
+                                      <span className="material-symbols-outlined text-xs">check_circle</span>
+                                      <span>Konfirmasi</span>
+                                    </button>
+                                    <button
+                                      onClick={() => setRejectModal({ open: true, orderId: ord.id, reason: "" })}
+                                      className="px-2 py-1 rounded bg-error-container/20 hover:bg-error-container text-error hover:text-white font-medium text-[11px] transition-colors border border-error/30"
+                                      title="Tolak Tiket"
+                                    >
+                                      Tolak
+                                    </button>
+                                  </>
+                                )}
+                                <Link
+                                  href={`/pesanan/${ord.id}`}
+                                  target="_blank"
+                                  className="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors"
+                                  title="Lihat Detail QRIS & Tiket"
+                                >
+                                  <span className="material-symbols-outlined text-sm">visibility</span>
+                                </Link>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* MODAL: CHANGE PASSWORD */}
@@ -1135,6 +1474,59 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* MODAL: REJECT ORDER */}
+      {rejectModal.open && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-surface-container-lowest border border-error/40 rounded-xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+              <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-error text-lg">cancel</span>
+                <span>Tolak / Batalkan Tiket {rejectModal.orderId}</span>
+              </h3>
+              <button
+                onClick={() => setRejectModal({ open: false, orderId: "", reason: "" })}
+                className="text-on-surface-variant hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-base">close</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleRejectOrder} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-on-surface-variant mb-1 font-medium">
+                  Alasan Penolakan / Pembatalan
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  value={rejectModal.reason}
+                  onChange={(e) => setRejectModal({ ...rejectModal, reason: e.target.value })}
+                  placeholder="Contoh: Bukti transfer QRIS tidak terverifikasi atau jadwal bentrok dengan deployment nasabah lain."
+                  className="w-full bg-surface-container-low border border-outline-variant/40 rounded px-3 py-2 text-on-surface focus:outline-none focus:border-error"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2 border-t border-outline-variant/20">
+                <button
+                  type="button"
+                  onClick={() => setRejectModal({ open: false, orderId: "", reason: "" })}
+                  className="px-4 py-2 rounded bg-surface-container text-on-surface font-medium hover:bg-surface-bright transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded bg-error text-white font-semibold hover:bg-red-700 transition-colors"
+                >
+                  Konfirmasi Tolak Tiket
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

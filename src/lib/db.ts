@@ -40,11 +40,29 @@ export interface NewsRecord {
   updated_at: string;
 }
 
+export interface OrderRecord {
+  id: string;
+  user_id: string;
+  user_email: string;
+  client_name: string;
+  company_name: string;
+  whatsapp: string;
+  service_type: string;
+  db_type: string;
+  booking_date: string;
+  notes: string;
+  amount: number;
+  status: "menunggu_konfirmasi" | "dikonfirmasi" | "ditolak" | string;
+  rejection_reason?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 interface LocalDatabase {
   Roles: RoleRecord[];
   Users: UserRecord[];
   News: NewsRecord[];
-  Orders: any[];
+  Orders: OrderRecord[];
 }
 
 const INITIAL_DB: LocalDatabase = {
@@ -309,3 +327,4 @@ export const db = {
     return true;
   },
 };
+

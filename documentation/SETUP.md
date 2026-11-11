@@ -82,7 +82,17 @@ File kode Apps Script telah disiapkan di root project:
    - Klik tombol **Run (Jalankan)**.
    - Saat pertama kali dijalankan, Google akan meminta izin akses (*Review Permissions* > pilih akun Anda > klik *Advanced* > klik *Go to (unsafe)* > klik *Allow*).
    - Tunggu hingga eksekusi selesai (*Execution completed*).
-   - Kembali ke tab Google Spreadsheet Anda: Anda akan melihat sheet **`Roles`**, **`Users`**, dan **`News`** telah otomatis terbuat rapi beserta akun admin awal!
+   - Kembali ke tab Google Spreadsheet Anda: Anda akan melihat sheet **`Roles`**, **`Users`**, **`News`**, dan **`Orders`** telah otomatis terbuat rapi beserta akun admin awal!
+
+### Menambahkan Sheet 'Orders' untuk Pemesanan / Booking (Step 3):
+Jika Anda sudah pernah menjalankan `initTables` sebelumnya dan ingin menambahkan sheet tabel `Orders` tanpa menghapus data pengguna lama:
+1. Di editor Apps Script, buka file `setup.gs` (pastikan kodenya sudah sama dengan file `setup.gs` terbaru di project ini).
+2. Pada dropdown pilihan fungsi di toolbar atas, pilih fungsi **`createOrdersTable`**.
+3. Klik tombol **Run (Jalankan)**. Sheet **`Orders`** dengan header berwarna Crimson akan otomatis muncul di Google Spreadsheet Anda!
+4. Jalankan perintah berikut di terminal jika ingin menyinkronkan data pesanan lokal yang sempat dibuat sebelumnya:
+   ```bash
+   node scripts/sync-orders.js
+   ```
 
 6. **Deploy sebagai Web App:**
    - Di editor Apps Script, klik tombol biru **Deploy** di pojok kanan atas > **New deployment**.
