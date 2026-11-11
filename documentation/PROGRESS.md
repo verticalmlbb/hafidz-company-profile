@@ -32,7 +32,9 @@ Posisi saat ini: **STEP 3 (Selesai & Terverifikasi) - Sistem Pemesanan / Booking
   - [x] Integrasi Schema Tabel `Orders` ke Google Apps Script (`setup.gs`) dan local fallback
   - [ ] Dikonfirmasi pengguna
 - [ ] STEP 4 - Deploy & maintenance
+  - [x] Kode berhasil di-push ke GitHub (`https://github.com/verticalmlbb/hafidz-company-profile.git`)
   - [ ] Deploy ke Vercel
+  - [ ] Verifikasi URL produksi & ganti password admin bawaan
 
 ## Catatan & Keputusan
 - **Alur Pemesanan & QRIS**: Klien mengisi formulir di `/booking`, tiket dibuat dengan status awal `menunggu_konfirmasi`. Klien melakukan transfer via scan QRIS. Admin memeriksa bukti dan menekan tombol *Konfirmasi* di Dashboard, mengubah status tiket menjadi *Dikonfirmasi*.
